@@ -43,6 +43,8 @@ if __name__ == '__main__':
     
     # -------------------------------------------------------------------------
 
+    average_rmse = 0 
+
     for i in range(len(image_paths)): 
 
         image_pattern = f'_sync_image_'
@@ -94,3 +96,11 @@ if __name__ == '__main__':
         # cv2.imshow("Difference", np.abs(scaled_depth_pred - scaled_gt))
         # cv2.waitKey(0)
         #
+
+        rmse = (scaled_gt - scaled_depth_pred) ** 2
+        rmse = np.sqrt(rmse.mean())
+
+        average_rmse += rmse
+
+    average_rmse /= len(image_paths)
+    print(average_rmse)
