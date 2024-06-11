@@ -48,8 +48,7 @@ def set_cmd_parameters():
 
     # -------------------------------------------------------------------------
 
-    sys.argv = placeholder + data_path + log_path + save_model + split 
-    + dataset + png + epochs + load_model + evaluate_mode + evaluate_split
+    sys.argv = placeholder + data_path + log_path + save_model + split + dataset + png + epochs + load_model + evaluate_mode + evaluate_split
     
     # -------------------------------------------------------------------------
 
