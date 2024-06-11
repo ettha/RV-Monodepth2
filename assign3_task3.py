@@ -16,12 +16,8 @@ from options import MonodepthOptions
 import sys
 import os
 
-
 #file_dir = os.path.dirname(__file__) # the directory that this file resides in
                            
-options = MonodepthOptions()
-opts = options.parse()
-
 def set_cmd_parameters(): 
 
     placeholder = ["assign3_task1.py"]
@@ -55,6 +51,9 @@ def set_cmd_parameters():
 if __name__ == "__main__":
 
     set_cmd_parameters()
+
+    options = MonodepthOptions()
+    opts = options.parse()
 
     trainer = Trainer(opts)
     trainer.train()
