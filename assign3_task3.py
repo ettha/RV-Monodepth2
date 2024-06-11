@@ -25,7 +25,6 @@ def set_cmd_parameters():
 
     # PATHS
     data_path = ["--data_path", "kitti_data"]
-    log_path = ["--log_dir", "train_log"]
 
     # TRAINING options
     save_model = ["--model_name", "finetuned_mono_stereo"] # the name of the folder to save the model in
@@ -39,13 +38,9 @@ def set_cmd_parameters():
     # LOADING options
     load_model = ["--load_weights_folder", "models/mono+stereo_640x192"]
 
-    # EVALUATION options
-    evaluate_mode = ["--eval_stereo"]
-    evaluate_split = ["--eval_split", "small"]
-
     # -------------------------------------------------------------------------
 
-    sys.argv = placeholder + data_path + log_path + save_model + split + dataset + png + epochs + load_model + evaluate_mode + evaluate_split
+    sys.argv = placeholder + data_path + save_model + split + dataset + png + epochs + load_model
     
     # -------------------------------------------------------------------------
 
