@@ -33,7 +33,7 @@ def set_cmd_parameters():
     png = ["--png"]
 
     # OPTIMIZATION options
-    epochs = ["--num_epochs", 10]
+    epochs = ["--num_epochs", "10"]
 
     # LOADING options
     load_model = ["--load_weights_folder", "mono+stereo_640x192"]
