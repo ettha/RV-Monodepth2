@@ -37,7 +37,7 @@ def set_cmd_parameters():
     epochs = ["--num_epochs", "10"]
 
     # LOADING options
-    load_model = ["--load_weights_folder", "mono+stereo_640x192"]
+    load_model = ["--load_weights_folder", "models/mono+stereo_640x192"]
 
     # EVALUATION options
     evaluate_mode = ["--eval_stereo"]
