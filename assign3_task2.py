@@ -6,6 +6,8 @@ import cv2
 import sys
 import os
 
+import shutil
+
 STEREO_SCALE_FACTOR = 5.4
 
 if __name__ == '__main__':
@@ -23,9 +25,9 @@ if __name__ == '__main__':
     #image_path = ["--image_path", os.path.join(image_dir, image_file)]
     # 
 
-    # model_name = ["--model_name", "mono+stereo_640x192"]
-    model_name = ["--model_name", "weights_9"]
-    #predict_depth = ["--pred_metric_depth"]
+    #model_name = ["--model_name", "mono+stereo_640x192"]
+    #model_name = ["--model_name", "finetuned_mono+stereo_640x192_epoch_9"]
+    predict_depth = ["--pred_metric_depth"]
 
     # -------------------------------------------------------------------------
 
@@ -64,26 +66,39 @@ if __name__ == '__main__':
             print(os.path.join(gt_image_dir, gt_image_file))
             exit()
 
-        depth_npy_fname = os.path.join(image_dir, "{}_disp.npy".format(file_name)) 
-        depth_pred = np.load(depth_npy_fname)
+        disp_npy_fname = os.path.join(image_dir, "{}_depth.npy".format(file_name)) 
+        disp_pred = np.load(disp_npy_fname)
 
-        if not depth_pred.any():
+        if file_name == "2011_10_03_drive_0047_sync_image_0000000005_image_03":
+            eval_fname = "2011_10_03_drive_0047_sync_image_0000000005_image_03"
+            disp_img_fname = os.path.join(image_dir, "{}_disp.jpeg".format(eval_fname)) 
+            shutil.copy(disp_img_fname, os.path.join("fileoutput", "{}_disp.jpeg".format(eval_fname))) 
+
+        if not disp_pred.any():
             print("Error: Could not load image from")
-            print(depth_npy_fname) 
+            print(disp_npy_fname) 
             exit()
 
         # Postprocessing
-        scaled_gt = ((gt_image / 256))
 
         gt_height, gt_width = gt_image.shape[:2]
 
-        # print(gt_image.shape)
-        gt_mask = gt_image > 0
-        gt_image = gt_image[gt_mask]
-        # print(gt_image.shape)
-
-        scaled_depth_pred = STEREO_SCALE_FACTOR * np.squeeze(depth_pred)
+        #scaled_depth_pred = STEREO_SCALE_FACTOR * np.squeeze(disp_pred)
+        scaled_depth_pred = np.squeeze(disp_pred)
         scaled_depth_pred = (cv2.resize(scaled_depth_pred, (gt_width, gt_height)))
+
+        scaled_gt = ((gt_image / 256))
+
+        mask = scaled_gt > 0
+        scaled_gt = scaled_gt[mask]
+        scaled_depth_pred = scaled_depth_pred[mask]
+
+        MIN_DEPTH = 1e-3
+        MAX_DEPTH = 80
+
+        scaled_depth_pred[scaled_depth_pred < MIN_DEPTH] = MIN_DEPTH
+        scaled_depth_pred[scaled_depth_pred > MAX_DEPTH] = MAX_DEPTH
+
         # 
 
         # Debug
@@ -108,6 +123,7 @@ if __name__ == '__main__':
 
         print(rmse)
         average_rmse += rmse
+
 
     average_rmse /= len(image_paths)
     print(average_rmse)
