@@ -24,7 +24,7 @@ if __name__ == '__main__':
     # 
 
     # model_name = ["--model_name", "mono+stereo_640x192"]
-    model_name = ["--model_name", "finetuned_mono+stereo_640x192_epoch_9"]
+    model_name = ["--model_name", "weights_9"]
     #predict_depth = ["--pred_metric_depth"]
 
     # -------------------------------------------------------------------------
