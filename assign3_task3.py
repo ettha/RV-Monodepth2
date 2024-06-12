@@ -31,6 +31,7 @@ def set_cmd_parameters():
     split = ["--split", "small"]
     dataset = ["--dataset", "small"]
     png = ["--png"]
+    stereo = ["--use_stereo"]
 
     # OPTIMIZATION options
     epochs = ["--num_epochs", "10"]
