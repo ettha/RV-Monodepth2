@@ -23,7 +23,8 @@ if __name__ == '__main__':
     #image_path = ["--image_path", os.path.join(image_dir, image_file)]
     # 
 
-    model_name = ["--model_name", "mono+stereo_640x192"]
+    # model_name = ["--model_name", "mono+stereo_640x192"]
+    model_name = ["--model_name", "finetuned_mono+stereo_640x192_epoch_9"]
     #predict_depth = ["--pred_metric_depth"]
 
     # -------------------------------------------------------------------------
@@ -76,6 +77,11 @@ if __name__ == '__main__':
 
         gt_height, gt_width = gt_image.shape[:2]
 
+        # print(gt_image.shape)
+        gt_mask = gt_image > 0
+        gt_image = gt_image[gt_mask]
+        # print(gt_image.shape)
+
         scaled_depth_pred = STEREO_SCALE_FACTOR * np.squeeze(depth_pred)
         scaled_depth_pred = (cv2.resize(scaled_depth_pred, (gt_width, gt_height)))
         # 
@@ -100,6 +106,7 @@ if __name__ == '__main__':
         rmse = (scaled_gt - scaled_depth_pred) ** 2
         rmse = np.sqrt(rmse.mean())
 
+        print(rmse)
         average_rmse += rmse
 
     average_rmse /= len(image_paths)
